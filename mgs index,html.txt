@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MGS ROBOTICS - Happy Diwali</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0d0f1a;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #ffcc00;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #ddd;
+            margin-bottom: 30px;
+        }
+
+        /* Diya Styling */
+        .diya-container {
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .diya-base {
+            width: 100px;
+            height: 50px;
+            background: linear-gradient(to bottom, #d47a19, #8b4513);
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .flame {
+            width: 24px;
+            height: 40px;
+            background: linear-gradient(to top, #ffcc00, #ff3300);
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -35px;
+            left: 38px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.5s ease-in-out;
+            box-shadow: 0 0 20px #ffcc00, 0 0 40px #ff3300;
+        }
+
+        .diya-container.lit .flame {
+            opacity: 1;
+            transform: scale(1);
+            animation: flicker 0.1s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); }
+            100% { transform: scale(1.05) rotate(2deg); }
+        }
+
+        .instruction {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: #ff9900;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="fireworksCanvas"></canvas>
+
+    <!-- MGS ROBOTICS Logo / Heading -->
+    <h1>MGS ROBOTICS</h1>
+    <p>കുട്ടികളും റോബോട്ടുകളും ചേർന്നുള്ള മനോഹരമായ ദീപാവലി ആശംസകൾ! ✨</p>
+
+    <!-- Interactive Diya -->
+    <div class="diya-container" id="diya" onclick="lightDiya()">
+        <div class="flame" id="flame"></div>
+        <div class="diya-base"></div>
+    </div>
+
+    <div class="instruction" id="statusText">ദീപം തെളിക്കാൻ ഇവിടെ തൊടൂ! 👇</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        let isLit = false;
+
+        function lightDiya() {
+            const diya = document.getElementById('diya');
+            const statusText = document.getElementById('statusText');
+
+            diya.classList.add('lit');
+            statusText.innerHTML = "🪔 <b>HAPPY DIWALI FROM MGS ROBOTICS!</b> 🪔<br>(സ്ക്രീനിൽ ക്ലിക്ക് ചെയ്ത് കൂടുതൽ ഫയർ വർക്സ് ഉണ്ടാക്കൂ!)";
+
+            // Trigger Fireworks
+            triggerFireworks();
+
+            // Enable screen tap fireworks
+            document.body.onclick = (e) => {
+                if (e.target.id !== 'diya') {
+                    confetti({
+                        particleCount: 50,
+                        spread: 60,
+                        origin: { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight }
+                    });
+                }
+            };
+        }
+
+        function triggerFireworks() {
+            var count = 200;
+            var defaults = { origin: { y: 0.7 } };
+
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
+            }
+
+            fire(0.25, { spread: 26, startVelocity: 55 });
+            fire(0.2, { spread: 60 });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+            fire(0.1, { spread: 120, startVelocity: 45 });
+        }
+    </script>
+</body>
+</html>
